@@ -1,0 +1,113 @@
+public class BinaryTree<T extends Comparable<T>> {
+    private Node<T> root;
+
+    // Вложенный класс для представления узлов дерева
+    private static class Node<T> {
+        T data;
+        Node<T> left;
+        Node<T> right;
+
+        Node(T data) {
+            this.data = data;
+            left = null;
+            right = null;
+        }
+    }
+
+    // Метод для добавления элемента в дерево
+    public void add(T value) {
+        root = addRecursive(root, value);
+    }
+
+    private Node<T> addRecursive(Node<T> current, T value) {
+        if (current == null) {
+            return new Node<>(value);
+        }
+
+        if (value.compareTo(current.data) < 0) {
+            current.left = addRecursive(current.left, value);
+        } else if (value.compareTo(current.data) > 0) {
+            current.right = addRecursive(current.right, value);
+        }
+        return current;
+    }
+
+    // Метод для поиска элемента в дереве
+    public boolean containsNode(T value) {
+        return containsNodeRecursive(root, value);
+    }
+
+    private boolean containsNodeRecursive(Node<T> current, T value) {
+        if (current == null) {
+            return false;
+        }
+        if (value.equals(current.data)) {
+            return true;
+        }
+        return value.compareTo(current.data) < 0
+                ? containsNodeRecursive(current.left, value)
+                : containsNodeRecursive(current.right, value);
+    }
+
+    // Прямой (pre-order) обход дерева
+    public void traversePreOrder() {
+        traversePreOrderRecursive(root);
+    }
+
+    private void traversePreOrderRecursive(Node<T> node) {
+        if (node != null) {
+            System.out.print(" " + node.data);
+            traversePreOrderRecursive(node.left);
+            traversePreOrderRecursive(node.right);
+        }
+    }
+
+    // Симметричный (in-order) обход дерева
+    public void traverseInOrder() {
+        traverseInOrderRecursive(root);
+    }
+
+    private void traverseInOrderRecursive(Node<T> node) {
+        if (node != null) {
+            traverseInOrderRecursive(node.left);
+            System.out.print(" " + node.data);
+            traverseInOrderRecursive(node.right);
+        }
+    }
+
+    // Обратный (post-order) обход дерева
+    public void traversePostOrder() {
+        traversePostOrderRecursive(root);
+    }
+
+    private void traversePostOrderRecursive(Node<T> node) {
+        if (node != null) {
+            traversePostOrderRecursive(node.left);
+            traversePostOrderRecursive(node.right);
+            System.out.print(" " + node.data);
+        }
+    }
+
+    public static void main(String[] args) {
+        BinaryTree<Integer> bt = new BinaryTree<>();
+        bt.add(6);
+        bt.add(4);
+        bt.add(8);
+        bt.add(3);
+        bt.add(5);
+        bt.add(7);
+        bt.add(9);
+
+        System.out.println("In-order traversal:");
+        bt.traverseInOrder(); // 3 4 5 6 7 8 9
+
+        System.out.println("\nPre-order traversal:");
+        bt.traversePreOrder(); // 6 4 3 5 8 7 9
+
+        System.out.println("\nPost-order traversal:");
+        bt.traversePostOrder(); // 3 5 4 7 9 8 6
+
+        System.out.println("\nContains 5? " + bt.containsNode(5)); // true
+        System.out.println("Contains 10? " + bt.containsNode(10)); // false
+    }
+}
