@@ -1,0 +1,61 @@
+public class ArrayStack<T> {
+    private T[] array;
+    private int top;
+    private int capacity;
+
+    // Конструктор для создания стека с заданной емкостью
+    public ArrayStack(int capacity) {
+        this.capacity = capacity;
+        this.array = (T[]) new Object[capacity];
+        this.top = -1;
+    }
+
+    // Метод для добавления элемента в стек
+    public void push(T item) {
+        if (isFull()) {
+            throw new StackOverflowError("Stack is full");
+        }
+        array[++top] = item;
+    }
+
+    // Метод для удаления элемента из стека
+    public T pop() {
+        if (isEmpty()) {
+            throw new RuntimeException("Stack is empty");
+        }
+        return array[top--];
+    }
+
+    // Метод для получения верхнего элемента стека без удаления
+    public T peek() {
+        if (isEmpty()) {
+            throw new RuntimeException("Stack is empty");
+        }
+        return array[top];
+    }
+
+    // Метод для проверки, пуст ли стек
+    public boolean isEmpty() {
+        return top == -1;
+    }
+
+    // Метод для проверки, полон ли стек
+    public boolean isFull() {
+        return top == capacity - 1;
+    }
+
+    // Метод для получения текущего размера стека
+    public int size() {
+        return top + 1;
+    }
+
+    public static void main(String[] args) {
+        ArrayStack<Integer> stack = new ArrayStack<>(5);
+        stack.push(1);
+        stack.push(2);
+        stack.push(3);
+        System.out.println(stack.pop());  // 3
+        System.out.println(stack.peek()); // 2
+        System.out.println(stack.size()); // 2
+    }
+}
