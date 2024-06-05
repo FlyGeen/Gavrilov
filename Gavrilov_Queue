@@ -1,0 +1,70 @@
+public class ArrayQueue<T> {
+    private T[] array;
+    private int front;
+    private int rear;
+    private int size;
+    private int capacity;
+
+    // Конструктор для создания очереди с заданной емкостью
+    public ArrayQueue(int capacity) {
+        this.capacity = capacity;
+        this.array = (T[]) new Object[capacity];
+        this.front = 0;
+        this.rear = -1;
+        this.size = 0;
+    }
+
+    // Метод для добавления элемента в очередь
+    public void enqueue(T item) {
+        if (isFull()) {
+            throw new IllegalStateException("Queue is full");
+        }
+        rear = (rear + 1) % capacity;
+        array[rear] = item;
+        size++;
+    }
+
+    // Метод для удаления элемента из очереди
+    public T dequeue() {
+        if (isEmpty()) {
+            throw new IllegalStateException("Queue is empty");
+        }
+        T item = array[front];
+        front = (front + 1) % capacity;
+        size--;
+        return item;
+    }
+
+    // Метод для получения первого элемента очереди без удаления
+    public T peek() {
+        if (isEmpty()) {
+            throw new IllegalStateException("Queue is empty");
+        }
+        return array[front];
+    }
+
+    // Метод для проверки, пуста ли очередь
+    public boolean isEmpty() {
+        return size == 0;
+    }
+
+    // Метод для проверки, полна ли очередь
+    public boolean isFull() {
+        return size == capacity;
+    }
+
+    // Метод для получения текущего размера очереди
+    public int size() {
+        return size;
+    }
+
+    public static void main(String[] args) {
+        ArrayQueue<Integer> queue = new ArrayQueue<>(5);
+        queue.enqueue(1);
+        queue.enqueue(2);
+        queue.enqueue(3);
+        System.out.println(queue.dequeue());  // 1
+        System.out.println(queue.peek());     // 2
+        System.out.println(queue.size());     // 2
+    }
+}
